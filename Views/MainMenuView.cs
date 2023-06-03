@@ -8,6 +8,7 @@ using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WarPlane.Controllers;
 
 namespace WarPlane
 {
@@ -15,26 +16,27 @@ namespace WarPlane
     {
         private Panel _panel;
         private Button _newGameButton;
-        private Button _highScoresButton;
+        private Button _explanationButton;
+        /*private Button _highScoresButton;*/
         private Button _exitGameButton;
         private MainMenuController _mainMenuController;
         private MainMenuModel _mainMenuModel;
         
         public event Action NewGameClicked;
-        public event Action HighScoresClicked;
+        public event Action ExplanationClicked;
+        /*public event Action HighScoresClicked;*/
         public event Action ExitGameClicked;
 
         public MainMenuView() =>  InitializeMainMenuView();
-        public void HideMainMenu() => Hide();
 
         private void InitializeMainMenuView()
         {
             CreatePanel();
             CreateNewGameButton();
-            CreateHighScoresButton();
+            CreateExplanationButton();
+            /*CreateHighScoresButton();*/
             CreateExitGameButton();
             CenterButtons();
-
             _mainMenuController = new MainMenuController(this);
         }
 
@@ -56,8 +58,20 @@ namespace WarPlane
             
             _panel.Controls.Add(_newGameButton);
         }
+        
+        private void CreateExplanationButton()
+        {
+            _explanationButton = new Button();
+            _explanationButton.Text = "Как играть";
+            _explanationButton.Font = new Font(_explanationButton.Font.FontFamily, 20, FontStyle.Bold);
+            _explanationButton.Anchor = AnchorStyles.None;
+            _explanationButton.Size = new Size(300, 150);
+            _explanationButton.Click += (sender, e) => ExplanationClicked?.Invoke();
+            
+            _panel.Controls.Add(_explanationButton);
+        }
 
-        private void CreateHighScoresButton()
+        /*private void CreateHighScoresButton()
         {
             _highScoresButton = new Button();
             _highScoresButton.Text = "Посмотреть рекорды";
@@ -67,7 +81,7 @@ namespace WarPlane
             _highScoresButton.Click += (sender, e) => HighScoresClicked?.Invoke();
             
             _panel.Controls.Add(_highScoresButton);
-        }
+        }*/
 
         private void CreateExitGameButton()
         {
@@ -97,7 +111,7 @@ namespace WarPlane
             var buttonY = (panelHeight - totalButtonHeight) / 2;
 
             _newGameButton.Location = new Point(buttonX, buttonY);
-            _highScoresButton.Location = new Point(buttonX, buttonY + buttonHeight + buttonSpacing);
+            _explanationButton.Location = new Point(buttonX, buttonY + buttonHeight + buttonSpacing);
             _exitGameButton.Location = new Point(buttonX, buttonY + (buttonHeight + buttonSpacing) * 2);
         }
 
